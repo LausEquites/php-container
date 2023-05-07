@@ -21,6 +21,9 @@ COPY docker/config/php.ini /usr/local/etc/php/conf.d/zzz_custom.ini
 # Configure supervisord
 COPY docker/config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Add composer
+COPY https://getcomposer.org/download/latest-stable/composer.phar /usr/local/bin/composer
+
 # Setup document root
 RUN mkdir -p /var/www
 
