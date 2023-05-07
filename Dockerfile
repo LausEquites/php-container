@@ -1,14 +1,12 @@
-# Build: docker build --tag=organ-controller .
-
-FROM php:7.4-fpm-alpine
-ARG TARGETARCH
+FROM php:8.2-fpm-alpine
 
 ADD docker/install-php-extensions /usr/local/bin/
 
 # Install PHP modules
 # Available modules: https://github.com/mlocati/docker-php-extension-installer
+RUN apk add --update linux-headers # Needed for installing xdebug
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions shmop opcache apcu
+    install-php-extensions opcache apcu mysqlnd pdo_mysql redis bcmath xdebug
 
 # Install packages
 RUN apk --no-cache add nginx supervisor curl bash
@@ -18,24 +16,13 @@ COPY docker/config/nginx.conf /etc/nginx/nginx.conf
 
 # Configure PHP-FPM
 COPY docker/config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
-COPY docker/config/php.ini /etc/php7/conf.d/zzz_custom.ini
+COPY docker/config/php.ini /usr/local/etc/php/conf.d/zzz_custom.ini
 
 # Configure supervisord
 COPY docker/config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody.nobody /run && \
-  chown -R nobody.nobody /var/lib/nginx && \
-  chown -R nobody.nobody /var/log/nginx
-
 # Setup document root
 RUN mkdir -p /var/www
-
-# Make the document root a volume
-VOLUME /var/www/html
-
-# Switch to use a non-root user from here on
-#USER nobody
 
 # Add application
 WORKDIR /var/www
