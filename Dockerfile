@@ -22,7 +22,7 @@ COPY docker/config/php.ini /usr/local/etc/php/conf.d/zzz_custom.ini
 COPY docker/config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add composer
-ADD https://getcomposer.org/download/latest-stable/composer.phar /usr/local/bin/composer
+ADD --chmod=755 https://getcomposer.org/download/latest-stable/composer.phar /usr/local/bin/composer
 
 # Setup document root
 RUN mkdir -p /var/www
