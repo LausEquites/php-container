@@ -13,6 +13,7 @@ RUN apk --no-cache add nginx supervisor curl bash
 
 # Configure nginx
 COPY docker/config/nginx.conf /etc/nginx/nginx.conf
+RUN mkdir /var/lib/nginx/logs && chmod a+rw mkdir /var/lib/nginx/logs
 
 # Configure PHP-FPM
 COPY docker/config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
