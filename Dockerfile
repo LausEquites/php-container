@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.4.8RC1-fpm-alpine
 
 ADD docker/install-php-extensions /usr/local/bin/
 
