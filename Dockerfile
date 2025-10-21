@@ -24,7 +24,6 @@ COPY docker/config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add composer
 ADD --chmod=755 https://getcomposer.org/download/latest-stable/composer.phar /usr/local/bin/composer
-RUN chmod 775 /usr/local/bin/composer
 
 # Setup document root
 RUN mkdir -p /var/www
