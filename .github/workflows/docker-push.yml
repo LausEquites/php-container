@@ -33,5 +33,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:php8.4
+            ghcr.io/${{ env.PROJECT_ID }}/php8.4:latest
