@@ -33,4 +33,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ env.PROJECT_ID }}/php8.4:latest
+            ghcr.io/lausequites/php-container:php8.4
