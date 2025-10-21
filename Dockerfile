@@ -1,5 +1,7 @@
 FROM php:8.4-fpm-alpine
 
+LABEL org.opencontainers.image.source="https://github.com/LausEquites/php-container"
+
 ADD docker/install-php-extensions /usr/local/bin/
 
 # Install PHP modules
