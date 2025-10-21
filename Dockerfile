@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.5.0RC2-fpm-alpine
 
 LABEL org.opencontainers.image.source="https://github.com/LausEquites/php-container"
 
