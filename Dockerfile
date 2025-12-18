@@ -1,14 +1,21 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.5-fpm-alpine
 
 LABEL org.opencontainers.image.source="https://github.com/LausEquites/php-container"
 
-ADD docker/install-php-extensions /usr/local/bin/
+#ADD docker/install-php-extensions /usr/local/bin/
 
 # Install PHP modules
 # Available modules: https://github.com/mlocati/docker-php-extension-installer
-RUN apk add --update linux-headers # Needed for installing xdebug
-RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions opcache apcu mysqlnd pdo_mysql redis bcmath xdebug
+#RUN apk add --update linux-headers # Needed for installing xdebug
+#RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
+#    install-php-extensions opcache apcu mysqlnd pdo_mysql redis bcmath xdebug
+
+RUN apk add --no-cache linux-headers \
+    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+	&& docker-php-ext-install -j$(nproc) bcmath pdo_mysql\
+    && pecl install apcu redis xdebug \
+    && docker-php-ext-enable redis xdebug apcu \
+    && apk del .build-deps
 
 # Install packages
 RUN apk --no-cache add nginx supervisor curl bash

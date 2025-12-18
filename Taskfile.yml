@@ -1,9 +1,12 @@
 version: '3'
 
 tasks:
+  build:
+    cmds:
+      - docker buildx build . --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest
   build-push:
     cmds:
-      - docker buildx build . --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.4:latest --push
+      - docker buildx build . --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest --push
   ghcr:login:
     cmds:
       - docker login ghcr.io -u lausequites
