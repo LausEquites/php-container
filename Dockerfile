@@ -12,10 +12,12 @@ LABEL org.opencontainers.image.source="https://github.com/LausEquites/php-contai
 
 RUN apk add --no-cache linux-headers \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
-	&& docker-php-ext-install -j$(nproc) bcmath pdo_mysql\
-    && pecl install apcu redis xdebug \
-    && docker-php-ext-enable redis xdebug apcu \
+    && apk add --no-cache zlib-dev libzip-dev oniguruma-dev pkgconf \
+	&& docker-php-ext-install -j$(nproc) bcmath pdo_mysql \
+    && pecl install apcu redis xdebug protobuf \
+    && docker-php-ext-enable redis xdebug apcu protobuf \
     && apk del .build-deps
+
 
 # Install packages
 RUN apk --no-cache add nginx supervisor curl bash

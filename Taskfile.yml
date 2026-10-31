@@ -4,6 +4,9 @@ tasks:
   build:
     cmds:
       - docker buildx build . --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest
+  build-arm:
+    cmds:
+      - docker buildx build . --platform linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest
   build-push:
     cmds:
       - docker buildx build . --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest --push
