@@ -8,6 +8,8 @@ pipeline {
     }
 
     triggers {
+        // Build on push to main (via GitHub webhook)
+        githubPush()
         // Weekly rebuild to pick up base image and package updates
         cron('H H * * 0')
     }
