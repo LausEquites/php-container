@@ -7,6 +7,11 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20'))
     }
 
+    triggers {
+        // Weekly rebuild to pick up base image and package updates
+        cron('H H * * 0')
+    }
+
     environment {
         REGISTRY   = 'ghcr.io'
         IMAGE      = 'ghcr.io/lausequites/php-container/php8.5'
@@ -43,6 +48,7 @@ pipeline {
                     SHORT_SHA=$(git rev-parse --short HEAD)
                     docker buildx build . \
                         --platform "$PLATFORMS" \
+                        --pull \
                         -t "$IMAGE:latest" \
                         -t "$IMAGE:$SHORT_SHA" \
                         --push
