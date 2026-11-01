@@ -3,13 +3,13 @@ version: '3'
 tasks:
   build:
     cmds:
-      - docker buildx build . --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest
+      - docker buildx build . --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ) --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest
   build-arm:
     cmds:
-      - docker buildx build . --platform linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest
+      - docker buildx build . --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ) --platform linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest
   build-push:
     cmds:
-      - docker buildx build . --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest --push
+      - docker buildx build . --build-arg GIT_COMMIT=$(git rev-parse HEAD) --build-arg BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ) --platform linux/amd64,linux/arm64 -t ghcr.io/lausequites/php-container/php8.5:latest --push
   ghcr:login:
     cmds:
       - docker login ghcr.io -u lausequites

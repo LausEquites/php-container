@@ -51,10 +51,28 @@ pipeline {
                     docker buildx build . \
                         --platform "$PLATFORMS" \
                         --pull \
+                        --build-arg GIT_COMMIT="$(git rev-parse HEAD)" \
+                        --build-arg BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
                         -t "$IMAGE:latest" \
                         -t "$IMAGE:$SHORT_SHA" \
                         --push
                 '''
+            }
+        }
+
+        stage('Report PHP version') {
+            steps {
+                script {
+                    def phpVersion = sh(
+                        returnStdout: true,
+                        script: '''
+                            docker buildx imagetools inspect "$IMAGE:$(git rev-parse --short HEAD)" \
+                                --format '{{ index (index .Image "linux/amd64").Config.Labels "com.heynabo.main-service.version" }}'
+                        '''
+                    ).trim()
+                    echo "Built PHP version: ${phpVersion}"
+                    currentBuild.description = "PHP ${phpVersion}"
+                }
             }
         }
     }
