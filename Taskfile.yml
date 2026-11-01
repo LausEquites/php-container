@@ -13,3 +13,7 @@ tasks:
   ghcr:login:
     cmds:
       - docker login ghcr.io -u lausequites
+  test:
+    cmds:
+      - docker build . -t php-container:test
+      - ./tests/smoke-test.sh php-container:test

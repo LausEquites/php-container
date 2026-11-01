@@ -8,7 +8,8 @@ pipeline {
     }
 
     triggers {
-        // Build on push to main (via GitHub webhook)
+        // Build on every push to main. Requires a GitHub webhook pointing at
+        // <jenkins-url>/github-webhook/ (push events) and the job's branch set to main.
         githubPush()
         // Weekly rebuild to pick up base image and package updates
         cron('H H * * 0')
@@ -31,6 +32,22 @@ pipeline {
                     docker buildx use "$BUILDER"
                     docker buildx inspect --bootstrap
                 '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Build for the agent's native platform only, load it locally and smoke test it
+                // before anything is pushed. Layers are cached by the builder for the push below.
+                sh '''
+                    docker buildx build . --pull --load -t "php-container:test-$BUILD_NUMBER"
+                    ./tests/smoke-test.sh "php-container:test-$BUILD_NUMBER"
+                '''
+            }
+            post {
+                always {
+                    sh 'docker rmi "php-container:test-$BUILD_NUMBER" || true'
+                }
             }
         }
 
