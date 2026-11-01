@@ -84,7 +84,7 @@ pipeline {
                         returnStdout: true,
                         script: '''
                             docker buildx imagetools inspect "$IMAGE:$(git rev-parse --short HEAD)" \
-                                --format '{{ index (index .Image "linux/amd64").Config.Labels "com.heynabo.main-service.version" }}'
+                                --format '{{ index (index .Image "linux/amd64").Config.Labels "com.lausequites.main-service.version" }}'
                         '''
                     ).trim()
                     echo "Built PHP version: ${phpVersion}"

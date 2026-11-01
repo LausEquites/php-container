@@ -49,8 +49,8 @@ ARG BUILD_DATE=unknown
 # PHP_VERSION is inherited from the php base image
 LABEL org.opencontainers.image.revision="${GIT_COMMIT}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      com.heynabo.main-service.name="php" \
-      com.heynabo.main-service.version="${PHP_VERSION}"
+      com.lausequites.main-service.name="php" \
+      com.lausequites.main-service.version="${PHP_VERSION}"
 
 RUN printf '{\n  "main_service": {\n    "name": "php",\n    "version": "%s"\n  },\n  "git_commit": "%s",\n  "build_date": "%s"\n}\n' \
         "$PHP_VERSION" "$GIT_COMMIT" "$BUILD_DATE" > /etc/image-info.json
